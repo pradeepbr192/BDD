@@ -3,8 +3,9 @@ package stepdefinition;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
-import cucumber.api.PendingException;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -16,28 +17,36 @@ public class Loginstepdefinition {
 	@Given("^user is on login page$")
 	
 	public void useralreadyonloginpage(){
-		System.setProperty("webdriver.chrome.driver", "D:\\JAR files\\chromedriver.exe");
-		driver.get("www.freecrm.com/");	
+		System.setProperty("webdriver.chrome.driver", "D:\\uiautomation\\drivers\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.get("http://freecrm.com/");	
 	}
 	
-	@When("^i enter username and password$")
-	public void i_enter_username_and_password() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
+	//
+	
+	//@When("^i enter \\*(.*)\\* and \\*(.*)\\*$")
+	@When("^i enter \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void i_enter_username_and_password(String username, String password)  {
+	    
 		String str= driver.getTitle();
 				
-		Assert.assertEquals("FREE CRM in the cloud software boosts sales",str,"Title is not valid" );
-		driver.findElement(By.xpath("//input[@name='username']")).sendKeys("pradeep");;
-		driver.findElement(By.xpath("//input[@name='password']")).sendKeys("welcome");;
+		Assert.assertEquals("Free CRM software in the cloud powers sales and customer service",str);
+		driver.findElement(By.xpath("//input[@name='username']")).sendKeys(username);
+		driver.findElement(By.xpath("//input[@name='password']")).sendKeys(password);
+		driver.findElement(By.xpath("//input[@type='submit']")).click();
 		
-	    throw new PendingException();
+	    
 	}
 
 	@Then("^i land on home page$")
 	public void i_land_on_home_page() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
+	    
 		String str1=driver.getTitle();
 		Assert.assertEquals("CRMPRO",str1);
-		driver.findElement(By.xpath("//td[contains(text(),'User: test automation')]"));
-	    throw new PendingException();
+		
+		driver.findElement(By.xpath("//td[contains(text(),'automation')]"));
+		
+		driver.quit();
+	    
 	}
 }
